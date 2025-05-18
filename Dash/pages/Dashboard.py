@@ -164,13 +164,14 @@ for i, month in enumerate(months):
         "NPS Corpus": round(nps_corpus),
         "Pay Commission Applied": pay_commission_applied
     })
-# df is your progression DataFrame with all months until retirement
-last_da_pct = df.iloc[-1]['DA Rate']  # e.g., 0.69 for 69%
+
 # --- Final Outputs ---
 df = pd.DataFrame(records)
 final_basic = basic_pay
 ups_pension = 0.5 * final_basic
 nps_annuity_amount = (nps_corpus * annuity_pct) * annuity_rate
+# df is your progression DataFrame with all months until retirement
+last_da_pct = df.iloc[-1]['DA Rate']  # e.g., 0.69 for 69%
 # UPS lumpsum (gratuity) as per new rule
 ups_lumpsum = final_basic * (completed_six_months / 10)
 nps_lumpsum = nps_corpus * (1 - annuity_pct)
