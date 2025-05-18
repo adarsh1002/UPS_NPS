@@ -6,6 +6,9 @@ import numpy as np
 from datetime import datetime, timedelta, date
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import json
+creds_dict = json.loads(st.secrets["gcp_service_account"])
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 # Load Data
 st.title("Government Servant Pension Comparison: UPS vs NPS")
 CPC_YEARS = {
