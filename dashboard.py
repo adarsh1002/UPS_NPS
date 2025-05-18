@@ -175,7 +175,7 @@ st.subheader("Total NPS Corpus at Retirement")
 st.markdown(f"**Corpus:** ₹{nps_corpus:,.0f}")
 
 # View each CPC matrix
-st.subheader("Current Pay Matrices by CPC")
-for cpc in sorted(pay_matrix_full['CPC'].unique()):
-    st.markdown(f"### {cpc} Pay Matrix")
-    st.dataframe(pay_matrix_full[pay_matrix_full['CPC'] == cpc].sort_values(['Level', 'Pay_Position']))
+#st.subheader("Current Pay Matrices by CPC")
+#for cpc in sorted(pay_matrix_full['CPC'].unique()):
+   # st.markdown(f"### {cpc} Pay Matrix")
+   # st.dataframe(pay_matrix_full[pay_matrix_full['CPC'] == cpc].sort_values(['Level', 'Pay_Position']))
