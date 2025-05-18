@@ -204,7 +204,7 @@ st.markdown(f"**Corpus:** ₹{nps_corpus:,.0f}")
 st.subheader("Lumpsum & Total Benefits")
 col1, col2 = st.columns(2)
 with col1:
-    st.markdown(f"**UPS Lumpsum (Gratuity):** ₹{ups_lumpsum:,.0f}")
+    st.markdown(f"**UPS Lumpsum :** ₹{ups_lumpsum:,.0f}")
     st.markdown(f"**Total UPS Pension (with DA escalation, {life_expectancy_years} yrs):** ₹{total_ups_paid:,.0f}")
 with col2:
     st.markdown(f"**NPS Lumpsum:** ₹{nps_lumpsum:,.0f}")
