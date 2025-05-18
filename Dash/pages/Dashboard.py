@@ -70,6 +70,9 @@ initial_level = st.selectbox("Initial Pay Level", unique_levels)
 initial_position = st.number_input("Initial Pay Position", min_value=1, max_value=40, value=1)
 date_of_increment = st.selectbox("Date of Annual Increment", ["January", "July"])
 promotion_interval = st.slider("Promotion Every (Years)", 2, 10, 4)
+life_expectancy_years = st.slider(
+    "Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20
+)
 
 nps_contribution_rate = st.slider("Total NPS Contribution Rate (% of Basic + DA)", 10, 30, 20) / 100
 nps_return = st.slider("NPS Annual Return Rate (%)", 5.0, 12.0, 8.0) / 100
@@ -80,6 +83,12 @@ annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
 retire_year = datetime.now().year + (retirement_age - current_age)
 retire_date = datetime(retire_year, joining_date.month, joining_date.day)
 months = pd.date_range(start=joining_date, end=retire_date, freq='MS')
+# Service duration
+service_months = (retire_date.year - joining_date.year) * 12 + (retire_date.month - joining_date.month)
+completed_six_months = service_months // 6
+
+# UPS lumpsum (gratuity) as per new rule
+ups_lumpsum = final_basic * (completed_six_months / 10)
 
 # --- Main Calculation Loop ---
 records = []
@@ -156,12 +165,30 @@ for i, month in enumerate(months):
         "NPS Corpus": round(nps_corpus),
         "Pay Commission Applied": pay_commission_applied
     })
-
+# df is your progression DataFrame with all months until retirement
+last_da_pct = df.iloc[-1]['DA Rate']  # e.g., 0.69 for 69%
 # --- Final Outputs ---
 df = pd.DataFrame(records)
 final_basic = basic_pay
 ups_pension = 0.5 * final_basic
 nps_annuity_amount = (nps_corpus * annuity_pct) * annuity_rate
+# UPS lumpsum (gratuity) as per new rule
+ups_lumpsum = final_basic * (completed_six_months / 10)
+nps_lumpsum = nps_corpus * (1 - annuity_pct)
+# Total payouts over life expectancy
+months_retired = life_expectancy_years * 12
+ups_monthly_pension = ups_pension * (1)
+
+da_post_retire = last_da_pct  # Start from DA% at retirement!
+total_ups_paid = 0.0
+
+for i in range(months_retired):
+    if i % 6 == 0 and i != 0:
+        da_post_retire += 0.03
+    month_pension = ups_monthly_pension * (1 + da_post_retire)
+    total_ups_paid += month_pension
+nps_monthly_annuity = (nps_corpus * annuity_pct * annuity_rate) / 12
+total_nps_paid = nps_monthly_annuity * months_retired
 
 # --- Results ---
 st.subheader("Monthly Pay Progression Table")
@@ -174,6 +201,14 @@ st.markdown(f"**NPS Monthly Pension (Estimated):** ₹{nps_annuity_amount / 12:,
 st.subheader("Total NPS Corpus at Retirement")
 st.markdown(f"**Corpus:** ₹{nps_corpus:,.0f}")
 
+st.subheader("Lumpsum & Total Benefits")
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown(f"**UPS Lumpsum (Gratuity):** ₹{ups_lumpsum:,.0f}")
+    st.markdown(f"**Total UPS Pension (with DA escalation, {life_expectancy_years} yrs):** ₹{total_ups_paid:,.0f}")
+with col2:
+    st.markdown(f"**NPS Lumpsum:** ₹{nps_lumpsum:,.0f}")
+    st.markdown(f"**Total NPS Annuity ({life_expectancy_years} yrs):** ₹{total_nps_paid:,.0f}")
 # View each CPC matrix
 #st.subheader("Current Pay Matrices by CPC")
 #for cpc in sorted(pay_matrix_full['CPC'].unique()):
