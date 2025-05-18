@@ -24,7 +24,28 @@ def load_data():
     return pay_matrix, da_table
 
 pay_matrix, da_table = load_data()
-pay_comm_increase = st.slider("Average Pay Commission Increase (%)", 10, 50, 25) / 100
+col1, col2,col3 = st.columns(3)
+with col1:
+    st.subheader("Joining Details")
+    joining_date = pd.to_datetime(st.date_input("Date of Joining", value=date(2016, 12, 13)))
+    retirement_age = st.slider("Retirement Age", 58, 65, 60)
+    current_age = st.slider("Current Age", 20, 60, 34)
+    pay_comm_increase = st.slider("Average Pay Commission Increase (%)", 10, 50, 25) / 100
+unique_levels = sorted(pay_matrix['Level'].dropna().unique())
+with col2:
+    st.subheader("Pay Details")
+    initial_level = st.selectbox("Initial Pay Level", unique_levels)
+    initial_position = st.number_input("Initial Pay Position", min_value=1, max_value=40, value=1)
+    date_of_increment = st.selectbox("Date of Annual Increment", ["January", "July"])
+    promotion_interval = st.slider("Promotion Every (Years)", 2, 10, 4)
+with col3:
+    st.subheader("NPS Details")
+    nps_contribution_rate = st.slider("Total NPS Contribution Rate (% of Basic + DA)", 10, 30, 20) / 100
+    nps_return = st.slider("NPS Annual Return Rate (%)", 5.0, 12.0, 8.0) / 100
+    annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 80, 60) / 100
+    annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
+    life_expectancy_years = st.slider(
+    "Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20)
 def generate_cpc_tables(base_matrix, da_table, pay_comm_increase):
     all_cpc_tables = [base_matrix.copy()]
     cpc_years = CPC_YEARS.copy()
@@ -62,22 +83,7 @@ def create_new_cpc_matrix(old_matrix, da_table, new_cpc_base_year, pay_comm_incr
 
 
 # User Inputs
-joining_date = pd.to_datetime(st.date_input("Date of Joining", value=date(2016, 12, 13)))
-retirement_age = st.slider("Retirement Age", 58, 65, 60)
-current_age = st.slider("Current Age", 20, 60, 34)
-unique_levels = sorted(pay_matrix['Level'].dropna().unique())
-initial_level = st.selectbox("Initial Pay Level", unique_levels)
-initial_position = st.number_input("Initial Pay Position", min_value=1, max_value=40, value=1)
-date_of_increment = st.selectbox("Date of Annual Increment", ["January", "July"])
-promotion_interval = st.slider("Promotion Every (Years)", 2, 10, 4)
-life_expectancy_years = st.slider(
-    "Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20
-)
 
-nps_contribution_rate = st.slider("Total NPS Contribution Rate (% of Basic + DA)", 10, 30, 20) / 100
-nps_return = st.slider("NPS Annual Return Rate (%)", 5.0, 12.0, 8.0) / 100
-annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 100, 60) / 100
-annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
 
 # --- Simulation Timeline ---
 retire_year = datetime.now().year + (retirement_age - current_age)
