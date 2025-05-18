@@ -15,8 +15,8 @@ CPC_YEARS = {
 BASE_CPC = '7CPC'
 @st.cache_data
 def load_data():
-    pay_matrix = pd.read_excel("/Users/adarshagarwal/Documents/7CPC/7cpclong.xlsx")
-    da_table = pd.read_excel("/Users/adarshagarwal/Documents/7CPC/DAtable.xlsx")
+    pay_matrix = pd.read_excel("7cpclong.xlsx")
+    da_table = pd.read_excel("DAtable.xlsx")
     da_table['Date'] = pd.to_datetime(da_table['Date'])
     pay_matrix['Pay_Position'] = pd.to_numeric(pay_matrix['Pay_Position'], errors='coerce')
     pay_matrix['CPC'] = '7CPC'
