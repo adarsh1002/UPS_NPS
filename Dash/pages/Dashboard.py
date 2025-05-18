@@ -24,6 +24,7 @@ def load_data():
     return pay_matrix, da_table
 
 pay_matrix, da_table = load_data()
+unique_levels = sorted(pay_matrix['Level'].dropna().unique())
 col1, col2,col3 = st.columns(3)
 with col1:
     st.subheader("Joining Details")
@@ -44,7 +45,7 @@ with col3:
     annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 80, 60) / 100
     annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
     life_expectancy_years = st.slider("Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20)
-unique_levels = sorted(pay_matrix['Level'].dropna().unique())
+
 def generate_cpc_tables(base_matrix, da_table, pay_comm_increase):
     all_cpc_tables = [base_matrix.copy()]
     cpc_years = CPC_YEARS.copy()
