@@ -31,7 +31,6 @@ with col1:
     retirement_age = st.slider("Retirement Age", 58, 65, 60)
     current_age = st.slider("Current Age", 20, 60, 34)
     pay_comm_increase = st.slider("Average Pay Commission Increase (%)", 10, 50, 25) / 100
-unique_levels = sorted(pay_matrix['Level'].dropna().unique())
 with col2:
     st.subheader("Pay Details")
     initial_level = st.selectbox("Initial Pay Level", unique_levels)
@@ -44,8 +43,8 @@ with col3:
     nps_return = st.slider("NPS Annual Return Rate (%)", 5.0, 12.0, 8.0) / 100
     annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 80, 60) / 100
     annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
-    life_expectancy_years = st.slider(
-    "Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20)
+    life_expectancy_years = st.slider("Expected Years to Live Beyond Retirement", min_value=1, max_value=50, value=20)
+unique_levels = sorted(pay_matrix['Level'].dropna().unique())
 def generate_cpc_tables(base_matrix, da_table, pay_comm_increase):
     all_cpc_tables = [base_matrix.copy()]
     cpc_years = CPC_YEARS.copy()
