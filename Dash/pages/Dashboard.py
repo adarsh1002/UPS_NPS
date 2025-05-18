@@ -87,8 +87,7 @@ months = pd.date_range(start=joining_date, end=retire_date, freq='MS')
 service_months = (retire_date.year - joining_date.year) * 12 + (retire_date.month - joining_date.month)
 completed_six_months = service_months // 6
 
-# UPS lumpsum (gratuity) as per new rule
-ups_lumpsum = final_basic * (completed_six_months / 10)
+
 
 # --- Main Calculation Loop ---
 records = []
