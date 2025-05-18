@@ -4,6 +4,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta, date
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 # Load Data
 st.title("Government Servant Pension Comparison: UPS vs NPS")
 CPC_YEARS = {
@@ -220,3 +222,38 @@ with col2:
 #for cpc in sorted(pay_matrix_full['CPC'].unique()):
    # st.markdown(f"### {cpc} Pay Matrix")
    # st.dataframe(pay_matrix_full[pay_matrix_full['CPC'] == cpc].sort_values(['Level', 'Pay_Position']))
+# Authenticate
+scope = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive",
+]
+creds = ServiceAccountCredentials.from_json_keyfile_name(
+    "superset-239416-dc110be2da4e.json", scope
+)
+client = gspread.authorize(creds)
+
+# Open your sheet
+sheet = client.open("NPS_data").worksheet("Sheet1")
+
+# To append a row:
+row = [
+    retirement_age,
+    current_age,
+    initial_position,
+    initial_level,
+    pay_comm_increase,
+    nps_contribution_rate,
+    nps_return,
+    annuity_pct,
+    annuity_rate,
+    life_expectancy_years,
+    ups_pension,
+    nps_annuity_amount/12,
+    nps_corpus,
+    ups_lumpsum,
+    total_ups_paid,
+    nps_lumpsum,
+    total_nps_paid 
+]
+sheet.append_row(row)
+
