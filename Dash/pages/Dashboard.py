@@ -76,7 +76,7 @@ life_expectancy_years = st.slider(
 
 nps_contribution_rate = st.slider("Total NPS Contribution Rate (% of Basic + DA)", 10, 30, 20) / 100
 nps_return = st.slider("NPS Annual Return Rate (%)", 5.0, 12.0, 8.0) / 100
-annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 80, 60) / 100
+annuity_pct = st.slider("% of Corpus Converted to Annuity", 40, 100, 60) / 100
 annuity_rate = st.slider("Annual Annuity Rate (%)", 5.0, 8.0, 6.0) / 100
 
 # --- Simulation Timeline ---
