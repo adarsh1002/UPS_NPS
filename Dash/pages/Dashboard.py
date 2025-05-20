@@ -225,6 +225,37 @@ with col2:
    # st.markdown(f"### {cpc} Pay Matrix")
    # st.dataframe(pay_matrix_full[pay_matrix_full['CPC'] == cpc].sort_values(['Level', 'Pay_Position']))
 # Authenticate
+creds_dict = json.loads(st.secrets["gcp_service_account"])
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+
+# Open your sheet
+sheet = client.open("NPS_data").worksheet("Sheet1")
+
+# To append a row:
+row = [
+    retirement_age,
+    current_age,
+    initial_position,
+    initial_level,
+    pay_comm_increase,
+    nps_contribution_rate,
+    nps_return,
+    annuity_pct,
+    annuity_rate,
+    life_expectancy_years,
+    ups_pension,
+    nps_annuity_amount/12,
+    nps_corpus,
+    ups_lumpsum,
+    total_ups_paid,
+    nps_lumpsum,
+    total_nps_paid 
+]
+row = [x.item() if hasattr(x, 'item') else x for x in row]
+
+sheet.append_row(row)
+
 
 
 
