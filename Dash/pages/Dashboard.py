@@ -260,6 +260,32 @@ else:
         f"(Life expectancy set to {life_expectancy_years} years)"
     )
 
+# --- UPS Pension Table (month-wise up to life expectancy) ---
+st.subheader("UPS Pension Table")
+ups_pension_rows = []
+ups_monthly_pension = ups_pension  # If commuted, adjust here
+months_retired = life_expectancy_years * 12
+da_pct = last_da_pct
+
+total_paid = 0.0
+for i in range(months_retired):
+    if i % 6 == 0 and i != 0:
+        da_pct += 0.03
+    month_pension = ups_monthly_pension * (1 + da_pct)
+    total_paid += month_pension
+    ups_pension_rows.append({
+        "Month": i + 1,
+        "Pension (₹)": round(month_pension, 2),
+        "DA Rate (%)": round(da_pct * 100, 2),
+        "Cumulative Paid (₹)": round(total_paid, 2)
+    })
+
+ups_pension_df = pd.DataFrame(ups_pension_rows)
+st.subheader("UPS Pension Table (Post-Retirement, Month-wise)")
+st.dataframe(ups_pension_df)
+st.markdown(f"**Total UPS Pension Paid over {life_expectancy_years} years:** ₹{total_paid:,.0f}")
+
+
 
 
 
