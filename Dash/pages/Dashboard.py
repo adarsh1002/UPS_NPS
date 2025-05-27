@@ -290,7 +290,28 @@ nps_annuity_corpus = nps_corpus * annuity_pct
 nps_monthly_annuity = (nps_annuity_corpus * annuity_rate) / 12
 total_nps_paid = 0.0
 for i in range(months_retired):
-    nps_annuity_corpus = nps_annuity_corpus * (1 + nps_annuity_growth_r_*
+    nps_annuity_corpus = nps_annuity_corpus * (1 + nps_annuity_growth_rate / 12)
+    nps_monthly_annuity = (nps_annuity_corpus * annuity_rate) / 12
+    total_nps_paid += nps_monthly_annuity
+    nps_pension_rows.append({
+        "Month": i + 1,
+        "Pension (₹)": round(nps_monthly_annuity, 2),
+        "Annuity Corpus (₹)": round(nps_annuity_corpus, 2),
+        "Cumulative Paid (₹)": round(total_nps_paid, 2)
+    })
+nps_pension_df = pd.DataFrame(nps_pension_rows)
+
+# --- Display both tables ---
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader("UPS Pension Table (Month-wise)")
+    st.dataframe(ups_pension_df)
+    st.markdown(f"**Total UPS Pension Paid:** ₹{total_ups_paid:,.0f}")
+with col2:
+    st.subheader("NPS Annuity Table (Month-wise)")
+    st.dataframe(nps_pension_df)
+    st.markdown(f"**Total NPS Annuity Paid:** ₹{total_nps_paid:,.0f}")
+
 
 
 
