@@ -225,6 +225,40 @@ with col2:
    # st.markdown(f"### {cpc} Pay Matrix")
    # st.dataframe(pay_matrix_full[pay_matrix_full['CPC'] == cpc].sort_values(['Level', 'Pay_Position']))
 # Authenticate
+# --- NPS SWP Analysis ---
+st.subheader("NPS Lumpsum SWP Analysis")
+nps_reinvest_pct = st.slider("Reinvest % of NPS Lumpsum (not annuitized)", 0, 100, 100) / 100
+swp_amount = st.number_input("Monthly SWP (withdrawal) amount (₹)", min_value=1000, value=20000, step=1000)
+swp_return_rate = st.slider("Expected Annual Return on Reinvested Corpus (%)", 5, 15, 10) / 100
+
+nps_lumpsum_swp = nps_lumpsum * nps_reinvest_pct
+months_swp = life_expectancy_years * 12
+monthly_return = (1 + swp_return_rate) ** (1/12) - 1
+
+corpus = nps_lumpsum_swp
+months_corpus_lasts = 0
+for i in range(months_swp):
+    if corpus <= 0:
+        break
+    corpus = corpus * (1 + monthly_return) - swp_amount
+    months_corpus_lasts += 1
+
+corpus_left_at_end = corpus if corpus > 0 else 0
+years_corpus_lasts = months_corpus_lasts // 12
+months_extra = months_corpus_lasts % 12
+
+st.subheader("NPS Lumpsum SWP Outcome")
+st.write(
+    f"If you reinvest ₹{nps_lumpsum_swp:,.0f} ({nps_reinvest_pct*100:.0f}% of NPS lumpsum) at "
+    f"{swp_return_rate*100:.1f}% annual return and withdraw ₹{swp_amount:,.0f}/month:"
+)
+if months_corpus_lasts >= months_swp:
+    st.success(f"Your SWP lasts **all {life_expectancy_years} years** and you have ₹{corpus_left_at_end:,.0f} left at age {retirement_age+life_expectancy_years}.")
+else:
+    st.error(
+        f"Your SWP corpus will run out after **{years_corpus_lasts} years and {months_extra} months**. "
+        f"(Life expectancy set to {life_expectancy_years} years)"
+    )
 
 
 
