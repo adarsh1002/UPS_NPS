@@ -7,6 +7,8 @@ from datetime import datetime, timedelta, date
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+from supabase import create_client, Client
+
 
 # Load Data
 st.title("Government Servant Pension Comparison: UPS vs NPS")
@@ -312,6 +314,39 @@ with col2:
     st.dataframe(nps_pension_df)
     st.markdown(f"**Total NPS Annuity Paid:** ₹{total_nps_paid:,.0f}")
 
+# Load credentials from Streamlit secrets
+url = st.secrets["https://fvvoijerhejncdcskzjr.supabase.co"]
+key = st.secrets["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2dm9pamVyaGVqbmNkY3NrempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkwOTM3MDUsImV4cCI6MjA2NDY2OTcwNX0._0-JeP5iIDrThd30PvfOWgEaiGavfJRzDLAEYSbib5w"]
+
+# Connect to Supabase
+supabase: Client = create_client(url, key)
+
+# Example row to insert
+row = {
+    "Retirement Age":retirement_age,
+    "Current Age":current_age,
+    "Initial Pay Position": initial_position,
+    "Initial Pay Level":initial_level,
+    "Average Pay Commission Increase (%)":pay_comm_increase,
+    "Total NPS Contribution Rate (% of Basic + DA)":nps_contribution_rate,
+    "NPS Annual Return Rate (%)":nps_return,
+    "% of Corpus Converted to Annuity":annuity_pct,
+    "Annual Annuity Rate (%)":annuity_rate,
+    "Expected Years to Live Beyond Retirement":life_expectancy_years,
+    "UPS Monthly Pension:":ups_pension,
+    "NPS Monthly Pension (Estimated):":nps_annuity_amount/12,
+    "Total NPS Corpus at Retirement":nps_corpus,
+    "UPS Lumpsum :":ups_lumpsum,
+    "Total UPS Pension":total_ups_paid,
+    "NPS Lumpsum:":nps_lumpsum,
+    "Total NPS Annuity":total_nps_paid 
+    # Add more fields as needed
+}
+
+# Optional: Place this in a button
+if st.button("Save Simulation"):
+    data, count = supabase.table("UPS_Data").insert(row).execute()
+    st.success("Simulation results saved to Supabase database!")
 
 
 
