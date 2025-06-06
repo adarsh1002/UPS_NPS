@@ -322,25 +322,26 @@ supabase: Client = create_client(url, key)
 
 # Example row to insert
 row = {
-    "Retirement Age":retirement_age,
-    "Current Age":current_age,
-    "Initial Pay Position": initial_position,
-    "Initial Pay Level":initial_level,
-    "Average Pay Commission Increase (%)":pay_comm_increase,
-    "Total NPS Contribution Rate (% of Basic + DA)":nps_contribution_rate,
-    "NPS Annual Return Rate (%)":nps_return,
-    "% of Corpus Converted to Annuity":annuity_pct,
-    "Annual Annuity Rate (%)":annuity_rate,
-    "Expected Years to Live Beyond Retirement":life_expectancy_years,
-    "UPS Monthly Pension:":ups_pension,
-    "NPS Monthly Pension (Estimated):":nps_annuity_amount/12,
-    "Total NPS Corpus at Retirement":nps_corpus,
-    "UPS Lumpsum :":ups_lumpsum,
-    "Total UPS Pension":total_ups_paid,
-    "NPS Lumpsum:":nps_lumpsum,
-    "Total NPS Annuity":total_nps_paid 
+    "Retirement Age": int(retirement_age),
+    "Current Age": int(current_age),
+    "Initial Pay Position": int(initial_position),
+    "Initial Pay Level": str(initial_level),
+    "Average Pay Commission Increase (%)": float(pay_comm_increase),
+    "Total NPS Contribution Rate (% of Basic + DA)": float(nps_contribution_rate),
+    "NPS Annual Return Rate (%)": float(nps_return),
+    "% of Corpus Converted to Annuity": float(annuity_pct),
+    "Annual Annuity Rate (%)": float(annuity_rate),
+    "Expected Years to Live Beyond Retirement": int(life_expectancy_years),
+    "UPS Monthly Pension:": float(ups_pension),
+    "NPS Monthly Pension (Estimated):": float(nps_annuity_amount) / 12,
+    "Total NPS Corpus at Retirement": float(nps_corpus),
+    "UPS Lumpsum :": float(ups_lumpsum),
+    "Total UPS Pension": float(total_ups_paid),
+    "NPS Lumpsum:": float(nps_lumpsum),
+    "Total NPS Annuity": float(total_nps_paid) 
     # Add more fields as needed
 }
+
 
 # Optional: Place this in a button
 if st.button("Save Simulation"):
