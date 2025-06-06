@@ -342,11 +342,7 @@ row = {
     # Add more fields as needed
 }
 
-
-# Optional: Place this in a button
-if st.button("Save Simulation"):
-    data, count = supabase.table("UPS_Data").insert(row).execute()
-    st.success("Simulation results saved to Supabase database!")
+data, count = supabase.table("UPS_Data").insert(row).execute()
 
 
 
