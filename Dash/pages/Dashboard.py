@@ -189,7 +189,7 @@ ups_lumpsum = final_basic * (completed_six_months / 10)
 nps_lumpsum = nps_corpus * (1 - annuity_pct)
 # Total payouts over life expectancy
 months_retired = life_expectancy_years * 12
-ups_monthly_pension = ups_pension * (1)
+ups_monthly_pension = ups_pension * (1+last_da_pct)
 
 da_post_retire = last_da_pct  # Start from DA% at retirement!
 total_ups_paid = 0.0
