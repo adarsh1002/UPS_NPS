@@ -315,9 +315,8 @@ with col2:
     st.markdown(f"**Total NPS Annuity Paid:** ₹{total_nps_paid:,.0f}")
 
 # Load credentials from Streamlit secrets
-url = st.secrets["https://fvvoijerhejncdcskzjr.supabase.co"]
-key = st.secrets["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2dm9pamVyaGVqbmNkY3NrempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkwOTM3MDUsImV4cCI6MjA2NDY2OTcwNX0._0-JeP5iIDrThd30PvfOWgEaiGavfJRzDLAEYSbib5w"]
-
+url = st.secrets["supabase_url"]
+key = st.secrets["supabase_key"]
 # Connect to Supabase
 supabase: Client = create_client(url, key)
 
