@@ -325,7 +325,7 @@ row = {
     "Retirement Age": int(retirement_age),
     "Current Age": int(current_age),
     "Initial Pay Position": int(initial_position),
-    "Initial Pay Level": str(initial_level),
+    "Initial Pay Level": int(initial_level),
     "Average Pay Commission Increase (%)": float(pay_comm_increase),
     "Total NPS Contribution Rate (% of Basic + DA)": float(nps_contribution_rate),
     "NPS Annual Return Rate (%)": float(nps_return),
