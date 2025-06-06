@@ -335,7 +335,7 @@ row = {
     "UPS Monthly Pension:": float(ups_pension),
     "NPS Monthly Pension (Estimated):": float(nps_annuity_amount) / 12,
     "Total NPS Corpus at Retirement": float(nps_corpus),
-    "UPS Lumpsum :": float(ups_lumpsum),
+    "UPS Lumpsum :": int(ups_lumpsum),
     "Total UPS Pension": float(total_ups_paid),
     "NPS Lumpsum:": float(nps_lumpsum),
     "Total NPS Annuity": float(total_nps_paid) 
