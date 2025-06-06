@@ -332,7 +332,7 @@ row = {
     "% of Corpus Converted to Annuity": float(annuity_pct),
     "Annual Annuity Rate (%)": float(annuity_rate),
     "Expected Years to Live Beyond Retirement": int(life_expectancy_years),
-    "UPS Monthly Pension:": float(ups_pension),
+    "UPS Monthly Pension:": float(ups_pension*(1+last_da_pct)),
     "NPS Monthly Pension (Estimated):": float(nps_annuity_amount) / 12,
     "Total NPS Corpus at Retirement": float(nps_corpus),
     "UPS Lumpsum :": int(ups_lumpsum),
